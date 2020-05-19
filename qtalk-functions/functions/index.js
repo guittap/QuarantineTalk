@@ -3,33 +3,36 @@ const admin = require('firebase-admin');
 
 admin.initializeApp();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello world");
-});
+const express = require('express');
+const app = express();
 
-exports.getChats = functions.https.onRequest((req, res) => {
-     admin.firestore().collection('chat').get()
-          .then(data => {
-               let chat = [];
-               data.forEach(doc => {
-                    chat.push(doc.data());
+app.get('/chats', (req, res) => {
+     admin.firestore().collection('chat')
+     .orderBy('createdAt', 'desc')
+     .get()
+     .then(data => {
+          let chat = [];
+          data.forEach(doc => {
+               chat.push({
+                    chatId: doc.id,
+                    body: doc.data().body,
+                    userHandle: doc.data().userHandle,
+                    createdAt: doc.data().createdAt
                });
-               return res.json(chat);
-          })
-          .catch(err => console.error(err));
+          });
+          return res.json(chat);
+     })
+     .catch(err => console.error(err));
 });
 
-exports.createChat = functions.https.onRequest((req, res) => {
+app.post('/chat',(req, res) => {
      if (req.method != 'POST'){
           return res.status(400).json({ error: 'Method not allowed'});
      }
      const newChat = {
           body: req.body.body, 
           userHandle: req.body.userHandle,
-          createdAt: admin.firestore.Timestamp.fromDate(new Date())
+          createdAt: new Date().toISOString()
      };
 
      admin.firestore()
@@ -45,3 +48,7 @@ exports.createChat = functions.https.onRequest((req, res) => {
                console.error(err);
           });
 });
+
+// hhtps://baseurl.com/api
+
+exports.api = functions.https.onRequest(app);
