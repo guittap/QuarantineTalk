@@ -1,1 +1,5 @@
 node_modules/
+
+utility/admin.json
+
+utility/config.js
