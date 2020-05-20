@@ -7,16 +7,7 @@ admin.initializeApp({
      credential: admin.credential.cert(require('../key/admin.json'))
 });
 
-const config = {
-     apiKey: "AIzaSyCL6MMmg_HFbGa_1dlX3dh8rpfavxESitg",
-     authDomain: "quarantinetalk-a1064.firebaseapp.com",
-     databaseURL: "https://quarantinetalk-a1064.firebaseio.com",
-     projectId: "quarantinetalk-a1064",
-     storageBucket: "quarantinetalk-a1064.appspot.com",
-     messagingSenderId: "248664078567",
-     appId: "1:248664078567:web:94cbc17f745b8c97318a42",
-     measurementId: "G-LXBNKQXB3G"
-};
+const config = require('../key/config.json');
 
 const firebase = require('firebase');
 firebase.initializeApp(config);
