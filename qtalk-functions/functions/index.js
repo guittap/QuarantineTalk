@@ -3,7 +3,9 @@ const admin = require('firebase-admin');
 const express = require('express');
 const app = express();
 
-admin.initializeApp();
+admin.initializeApp({
+     credential: admin.credential.cert(require('../key/admin.json'))
+});
 
 const config = {
      apiKey: "AIzaSyCL6MMmg_HFbGa_1dlX3dh8rpfavxESitg",
