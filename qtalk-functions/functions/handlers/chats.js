@@ -52,3 +52,55 @@ exports.postOneChat = (req, res) => {
           });
 }
 
+// get comments of a chat
+exports.getChat = (req, res) => {
+     let chatData = {};
+     db.doc(`/chat/${req.params.chatId}`).get()
+          .then(doc => {
+               if(!doc.exists) {
+                    return res.status(404).json({error: 'Chat not found'})
+               }
+               chatData = doc.data();
+               chatData.chatId = doc.id;
+               return db.collection('comments').orderBy('createdAt', 'desc').where('chatId','==', req.params.chatId).get();
+          })
+          .then(data => {
+               chatData.comments = [];
+               data.forEach(doc => {
+                    chatData.comments.push(doc.data())
+               });
+               return res.json(chatData)
+          })
+          .catch (err => {
+               console.error(err);
+               res.status(500).json({error: err.code});
+          })
+}
+
+// comment on a chat
+exports.commentOnChat = (req, res) => {
+     if(req.body.body.trim() === '') return res.status(400).json({ error: 'Must not be empty'});
+
+     const newComment = {
+          body: req.body.body,
+          createdAt: new Date().toISOString(),
+          chatId: req.params.chatId,
+          userHandle: req.user.handle,
+          userImage: req.user.imageUrl
+     };
+
+     db.doc(`/chat/${req.params.chatId}`).get()
+          .then(doc => {
+               if(!doc.exists){
+                    return res.status(404).json({ error: 'Chat not found'});
+               }
+               return db.collection('comments').add(newComment);
+          })
+          .then(() => {
+               res.json(newComment);
+          })
+          .catch(err => {
+               console.log(err);
+               res.status(500).json({ error: 'Something went wrong' });
+          })
+}
