@@ -35,16 +35,19 @@ exports.postOneChat = (req, res) => {
      const newChat = {
           body: req.body.body, 
           userHandle: req.user.handle,
-          createdAt: new Date().toISOString()
+          userImage: req.user.imageUrl,
+          createdAt: new Date().toISOString(),
+          likeCount: 0,
+          commentCount: 0
      };
 
      db
           .collection('chat')
           .add(newChat)
           .then(doc => {
-               res.json({
-                    message: `document ${doc.id} created successfully`
-               });
+               const resChat = newChat;
+               resChat.chatId = doc.id;
+               res.json(resChat);
           })
           .catch(err => {
                res.status(500).json({ error: 'something went wrong'});
@@ -94,6 +97,9 @@ exports.commentOnChat = (req, res) => {
                if(!doc.exists){
                     return res.status(404).json({ error: 'Chat not found'});
                }
+               return doc.ref.update({ commentCount: doc.data().commentCount + 1});
+          })
+          .then(() => {
                return db.collection('comments').add(newComment);
           })
           .then(() => {
@@ -103,4 +109,109 @@ exports.commentOnChat = (req, res) => {
                console.log(err);
                res.status(500).json({ error: 'Something went wrong' });
           })
+}
+
+// like a chat
+exports.likeChat = (req, res) => {
+     const likeDocument = db.collection('likes').where('userHandle', '==', req.user.handle)
+          .where('chatId', '==', req.params.chatId).limit(1);
+
+     const chatDocument = db.doc(`/chat/${req.params.chatId}`);
+
+     let chatData = {};
+
+     chatDocument.get()
+          .then(doc => {
+               if(doc.exists) {
+                    chatData = doc.data();
+                    chatData.chatId = doc.id;
+                    return likeDocument.get();
+               } else {
+                    return res.status(404).json({ error: 'Chat not found'});
+               }
+          })
+          .then(data => {
+               if (data.empty) {
+                    return db.collection('likes').add({
+                         chatId: req.params.chatId,
+                         userHandle: req.user.handle
+                    })
+                    .then(() => {
+                         chatData.likeCount++;
+                         return chatDocument.update({ likeCount: chatData.likeCount });
+                    })
+                    .then(() => {
+                         return res.json(chatData);
+                    })
+               } else {
+                    return res.status(400).json({ error: 'Chat already liked'});
+               }
+          })
+          .catch (err => {
+               console.error(err);
+               res.status(500).json({ error: err.code });
+          })
+}
+
+exports.unlikeChat = (req, res) => {
+     const likeDocument = db.collection('likes').where('userHandle', '==', req.user.handle)
+          .where('chatId', '==', req.params.chatId).limit(1);
+
+     const chatDocument = db.doc(`/chat/${req.params.chatId}`);
+
+     let chatData = {};
+
+     chatDocument.get()
+          .then(doc => {
+               if(doc.exists) {
+                    chatData = doc.data();
+                    chatData.chatId = doc.id;
+                    return likeDocument.get();
+               } else {
+                    return res.status(404).json({ error: 'Chat not found'});
+               }
+          })
+          .then(data => {
+               if (data.empty) {
+                    return res.status(400).json({ error: 'Chat never liked'});
+                    
+               } else {
+                    return db.doc(`/likes/${data.docs[0].id}`).delete()
+                         .then(() => {
+                              chatData.likeCount--;
+                              return chatDocument.update( { likeCount: chatData.likeCount});
+                         })
+                         .then(() => {
+                              res.json(chatData);
+                         })
+               }
+          })
+          .catch (err => {
+               console.error(err);
+               res.status(500).json({ error: err.code });
+          })
+}
+
+//Delete chat
+exports.deleteChat = (req, res) => {
+     const document = db.doc(`/chat/${req.params.chatId}`);
+     document.get()
+          .then (doc => {
+               if (!doc.exists) {
+                    return res.status(404).json( { error: 'Chat not found' });
+               }
+               if (doc.data().userHandle !== req.user.handle) {
+                    return res.status(403).json({ error: 'Unauthorized' });
+               } else {
+                    return document.delete();
+               }
+          })
+          .then(() => {
+               res.json({ message: "Chat deleted successfully"});
+          })
+          .catch(err => {
+               console.error(err);
+               return res.status(500).json({ error: err.code });
+          })
+          
 }

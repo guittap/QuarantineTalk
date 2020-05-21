@@ -5,7 +5,7 @@ const app = express();
 
 const FBAuth = require('./utility/fbAuth')
 
-const { getAllChats, postOneChat, getChat, commentOnChat } = require('./handlers/chats');
+const { getAllChats, postOneChat, getChat, commentOnChat, likeChat, unlikeChat, deleteChat } = require('./handlers/chats');
 const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = require('./handlers/users');
 
 
@@ -13,9 +13,9 @@ const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = req
 app.get('/chats', getAllChats);
 app.post('/chat', FBAuth, postOneChat);
 app.get('/chat/:chatId', getChat);
-// TODO: delete chat
-// TODO: like a chat
-// TDOD: unlike a chat
+app.delete('/chat/:chatId', FBAuth, deleteChat);
+app.get('/chat/:chatId/like', FBAuth, likeChat);
+app.get('/chat/:chatId/unlike', FBAuth, unlikeChat);
 app.post('/chat/:chatId/comment', FBAuth, commentOnChat);
 
 // User Routes
