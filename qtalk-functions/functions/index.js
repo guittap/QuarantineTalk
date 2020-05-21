@@ -6,7 +6,7 @@ const app = express();
 const FBAuth = require('./utility/fbAuth')
 
 const { getAllChats, postOneChat } = require('./handlers/chats');
-const { signup, login, uploadImage } = require('./handlers/users');
+const { signup, login, uploadImage, addUserDetails, getAuthenticatedUser } = require('./handlers/users');
 
 
 // Chat Routes
@@ -17,5 +17,7 @@ app.post('/chat', FBAuth, postOneChat);
 app.post('/signup', signup);
 app.post('/login', login);
 app.post('/user/image', FBAuth, uploadImage);
+app.post('/user', FBAuth, addUserDetails);
+app.get('/user', FBAuth, getAuthenticatedUser);
 
 exports.api = functions.https.onRequest(app);
