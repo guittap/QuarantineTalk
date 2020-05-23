@@ -21,7 +21,7 @@ class home extends Component {
   }
   render() {
     let recentChatsMarkup = this.state.chats ? (
-      this.state.chats.map((chat) => <Chat chat={chat} />)
+      this.state.chats.map((chat) => <Chat key={chat.chatId} chat={chat} />)
     ) : (
       <p>Loading...</p>
     );
