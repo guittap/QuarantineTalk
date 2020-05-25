@@ -87,5 +87,8 @@ export default {
         margin: "20px 10px",
       },
     },
+    button: {
+      float: "right",
+    },
   },
 };
