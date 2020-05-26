@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import PropTypes from "prop-types";
 import MyButton from "../utility/MyButton";
+import DeleteChat from "./DeleteChat";
 
 //MUI Junk
 import Card from "@material-ui/core/Card";
@@ -25,6 +26,7 @@ const styles = {
   card: {
     display: "flex",
     marginBottom: 20,
+    position: "relative",
   },
   image: {
     minWidth: 200,
@@ -68,7 +70,10 @@ class Chat extends Component {
         likeCount,
         commentCount,
       },
-      user: { authenticated },
+      user: {
+        authenticated,
+        credentials: { handle },
+      },
     } = this.props;
 
     const likeButton = !authenticated ? (
@@ -87,6 +92,11 @@ class Chat extends Component {
       </MyButton>
     );
 
+    const deleteButton =
+      authenticated && userHandle === handle ? (
+        <DeleteChat chatId={chatId} />
+      ) : null;
+
     return (
       <div>
         <Card className={classes.card}>
@@ -104,6 +114,9 @@ class Chat extends Component {
             >
               {userHandle}
             </Typography>
+
+            {deleteButton}
+
             <Typography variant="body2" color="textSecondary">
               {dayjs(createdAt).fromNow()}
             </Typography>

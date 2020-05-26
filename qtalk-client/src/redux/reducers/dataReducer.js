@@ -1,4 +1,10 @@
-import { SET_CHATS, LIKE_CHAT, UNLIKE_CHAT, LOADING_DATA } from "../types";
+import {
+  SET_CHATS,
+  LIKE_CHAT,
+  UNLIKE_CHAT,
+  LOADING_DATA,
+  DELETE_CHAT,
+} from "../types";
 
 const initialState = {
   chats: [],
@@ -7,6 +13,7 @@ const initialState = {
 };
 
 export default function (state = initialState, action) {
+  let index;
   switch (action.type) {
     case LOADING_DATA:
       return {
@@ -23,7 +30,7 @@ export default function (state = initialState, action) {
 
     case LIKE_CHAT:
     case UNLIKE_CHAT:
-      let index = state.chats.findIndex(
+      index = state.chats.findIndex(
         (chat) => chat.chatId === action.payload.chatId
       );
       state.chats[index] = action.payload;
@@ -31,6 +38,12 @@ export default function (state = initialState, action) {
         ...state,
       };
 
+    case DELETE_CHAT:
+      index = state.chats.findIndex((chat) => chat.chatId === action.payload);
+      state.chats.splice(index, 1);
+      return {
+        ...state,
+      };
     default:
       return state;
   }

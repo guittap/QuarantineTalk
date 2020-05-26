@@ -15,3 +15,4 @@ export const SET_CHATS = "SET_CHATS";
 export const SET_CHAT = "SET_CHAT";
 export const LIKE_CHAT = "LIKE_CHAT";
 export const UNLIKE_CHAT = "UNLIKE_CHAT";
+export const DELETE_CHAT = "DELETE_CHAT";

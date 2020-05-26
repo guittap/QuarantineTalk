@@ -1,4 +1,10 @@
-import { SET_CHATS, LOADING_DATA, LIKE_CHAT, UNLIKE_CHAT } from "../types";
+import {
+  SET_CHATS,
+  LOADING_DATA,
+  LIKE_CHAT,
+  UNLIKE_CHAT,
+  DELETE_CHAT,
+} from "../types";
 import axios from "axios";
 
 // get all chats
@@ -42,6 +48,15 @@ export const unlikeChat = (chatId) => (dispatch) => {
         type: UNLIKE_CHAT,
         payload: res.data,
       });
+    })
+    .catch((err) => console.log(err));
+};
+
+export const deleteChat = (chatId) => (dispatch) => {
+  axios
+    .delete(`chat/${chatId}`)
+    .then(() => {
+      dispatch({ type: DELETE_CHAT, payload: chatId });
     })
     .catch((err) => console.log(err));
 };
