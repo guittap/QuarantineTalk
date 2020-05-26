@@ -13,7 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 // redux
 import { connect } from "react-redux";
-import { postChat } from "../redux/actions/dataActions";
+import { postChat, clearErrors } from "../redux/actions/dataActions";
 
 // icons
 import AddIcon from "@material-ui/icons/Add";
@@ -23,14 +23,16 @@ const styles = (theme) => ({
   ...theme.spread,
   submitButton: {
     position: "relative",
+    float: "right",
+    marginTop: "10",
   },
   progressSpinner: {
     position: "absolute",
   },
   closeButton: {
     position: "absolute",
-    left: "90%",
-    top: "10%",
+    left: "91%",
+    top: "6%",
   },
 });
 
@@ -48,8 +50,7 @@ class PostChat extends Component {
       });
     }
     if (!nextProps.UI.errors && !nextProps.UI.loading) {
-      this.setState({ body: "" });
-      this.handleClose();
+      this.setState({ body: "", open: false, errors: {} });
     }
   }
 
@@ -58,6 +59,7 @@ class PostChat extends Component {
   };
 
   handleClose = () => {
+    this.props.clearErrors();
     this.setState({ open: false, errors: {} });
   };
 
@@ -135,6 +137,7 @@ class PostChat extends Component {
 
 PostChat.propTypes = {
   postChat: PropTypes.func.isRequired,
+  clearErrors: PropTypes.func.isRequired,
   UI: PropTypes.object.isRequired,
 };
 
@@ -142,6 +145,6 @@ const mapStateToProps = (state) => ({
   UI: state.UI,
 });
 
-export default connect(mapStateToProps, { postChat })(
+export default connect(mapStateToProps, { postChat, clearErrors })(
   withStyles(styles)(PostChat)
 );
