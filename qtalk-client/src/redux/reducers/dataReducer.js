@@ -42,6 +42,9 @@ export default function (state = initialState, action) {
         (chat) => chat.chatId === action.payload.chatId
       );
       state.chats[index] = action.payload;
+      if (state.chat.chatId === action.payload.chatId) {
+        state.chat = action.payload;
+      }
       return {
         ...state,
       };
