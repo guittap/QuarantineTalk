@@ -5,6 +5,7 @@ import {
   LOADING_DATA,
   DELETE_CHAT,
   POST_CHAT,
+  SET_CHAT,
 } from "../types";
 
 const initialState = {
@@ -27,6 +28,12 @@ export default function (state = initialState, action) {
         ...state,
         chats: action.payload,
         loading: false,
+      };
+
+    case SET_CHAT:
+      return {
+        ...state,
+        chat: action.payload,
       };
 
     case LIKE_CHAT:

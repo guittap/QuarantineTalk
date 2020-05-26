@@ -8,6 +8,8 @@ import {
   POST_CHAT,
   CLEAR_ERRORS,
   LOADING_UI,
+  SET_CHAT,
+  STOP_LOADING_UI,
 } from "../types";
 import axios from "axios";
 
@@ -28,6 +30,20 @@ export const getChats = () => (dispatch) => {
         payload: [],
       });
     });
+};
+
+export const getChat = (chatId) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .get(`/chat/${chatId}`)
+    .then((res) => {
+      dispatch({
+        type: SET_CHAT,
+        payload: res.data,
+      });
+      dispatch({ type: STOP_LOADING_UI });
+    })
+    .catch((err) => console.log(err));
 };
 
 // post a chat

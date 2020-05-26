@@ -75,7 +75,7 @@ class DeleteChat extends Component {
 DeleteChat.propTypes = {
   deleteChat: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  chatId: PropTypes.object.isRequired,
+  chatId: PropTypes.string.isRequired,
 };
 
 export default connect(null, { deleteChat })(withStyles(styles)(DeleteChat));
