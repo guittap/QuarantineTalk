@@ -4,6 +4,10 @@ import {
   LIKE_CHAT,
   UNLIKE_CHAT,
   DELETE_CHAT,
+  SET_ERRORS,
+  POST_CHAT,
+  CLEAR_ERRORS,
+  LOADING_UI,
 } from "../types";
 import axios from "axios";
 
@@ -22,6 +26,26 @@ export const getChats = () => (dispatch) => {
       dispatch({
         type: SET_CHATS,
         payload: [],
+      });
+    });
+};
+
+// post a chat
+export const postChat = (newChat) => (dispatch) => {
+  dispatch({ type: LOADING_UI });
+  axios
+    .post("/chat", newChat)
+    .then((res) => {
+      dispatch({
+        type: POST_CHAT,
+        payload: res.data,
+      });
+      dispatch({ type: CLEAR_ERRORS });
+    })
+    .catch((err) => {
+      dispatch({
+        type: SET_ERRORS,
+        payload: err.response.data,
       });
     });
 };

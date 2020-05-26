@@ -4,6 +4,7 @@ import {
   UNLIKE_CHAT,
   LOADING_DATA,
   DELETE_CHAT,
+  POST_CHAT,
 } from "../types";
 
 const initialState = {
@@ -43,6 +44,12 @@ export default function (state = initialState, action) {
       state.chats.splice(index, 1);
       return {
         ...state,
+      };
+
+    case POST_CHAT:
+      return {
+        ...state,
+        chats: [action.payload, ...state.chats],
       };
     default:
       return state;
