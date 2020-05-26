@@ -3,6 +3,8 @@ import {
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
   LOADING_USER,
+  LIKE_CHAT,
+  UNLIKE_CHAT,
 } from "../types";
 
 const initialState = {
@@ -35,6 +37,26 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: true,
+      };
+
+    case LIKE_CHAT:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userHandle: state.credentials.handle,
+            chatId: action.payload.chatId,
+          },
+        ],
+      };
+
+    case UNLIKE_CHAT:
+      return {
+        ...state,
+        likes: state.likes.filter(
+          (like) => like.chatId !== action.payload.chatId
+        ),
       };
 
     default:

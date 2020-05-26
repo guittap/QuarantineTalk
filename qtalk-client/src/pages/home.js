@@ -1,28 +1,22 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
 import Chat from "../components/Chat";
 import Profile from "../components/Profile";
 
+import { connect } from "react-redux";
+import { getChats } from "../redux/actions/dataActions";
+
 class home extends Component {
-  state = {
-    chats: null,
-  };
   componentDidMount() {
-    axios
-      .get("/chats")
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          chats: res.data,
-        });
-      })
-      .catch((err) => console.log(err));
+    this.props.getChats();
   }
+
   render() {
-    let recentChatsMarkup = this.state.chats ? (
-      this.state.chats.map((chat) => <Chat key={chat.chatId} chat={chat} />)
+    const { chats, loading } = this.props.data;
+    let recentChatsMarkup = !loading ? (
+      chats.map((chat) => <Chat key={chat.chatId} chat={chat} />)
     ) : (
       <p>Loading...</p>
     );
@@ -39,4 +33,13 @@ class home extends Component {
   }
 }
 
-export default home;
+home.propTypes = {
+  getChats: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  data: state.data,
+});
+
+export default connect(mapStateToProps, { getChats })(home);
