@@ -18,3 +18,4 @@ export const LIKE_CHAT = "LIKE_CHAT";
 export const UNLIKE_CHAT = "UNLIKE_CHAT";
 export const DELETE_CHAT = "DELETE_CHAT";
 export const POST_CHAT = "POST_CHAT";
+export const SUBMIT_COMMENT = "SUBMIT_COMMENT";

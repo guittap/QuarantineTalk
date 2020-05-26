@@ -4,6 +4,7 @@ import MyButton from "../../utility/MyButton";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import Comments from "./Comments";
+import CommentForm from "./CommentForm";
 
 // MUI
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -20,7 +21,7 @@ import ChatIcon from "@material-ui/icons/Chat";
 
 // Redux
 import { connect } from "react-redux";
-import { getChat } from "../../redux/actions/dataActions";
+import { getChat, clearErrors } from "../../redux/actions/dataActions";
 import LikeButton from "./LikeButton";
 
 const styles = (theme) => ({
@@ -61,6 +62,7 @@ class ChatDialog extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
+    this.props.clearErrors();
   };
 
   render() {
@@ -106,6 +108,7 @@ class ChatDialog extends Component {
           <span>{commentCount} Comments</span>
         </Grid>
         <hr className={classes.visibleSeperator} />
+        <CommentForm chatId={chatId} />
         <Comments comments={comments} />
       </Grid>
     );
@@ -142,6 +145,7 @@ class ChatDialog extends Component {
 }
 
 ChatDialog.propTypes = {
+  clearErrors: PropTypes.func.isRequired,
   getChat: PropTypes.func.isRequired,
   chatId: PropTypes.string.isRequired,
   userHandle: PropTypes.string.isRequired,
@@ -156,6 +160,7 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
   getChat,
+  clearErrors,
 };
 
 export default connect(

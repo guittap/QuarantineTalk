@@ -6,6 +6,7 @@ import {
   DELETE_CHAT,
   POST_CHAT,
   SET_CHAT,
+  SUBMIT_COMMENT,
 } from "../types";
 
 const initialState = {
@@ -60,6 +61,14 @@ export default function (state = initialState, action) {
       return {
         ...state,
         chats: [action.payload, ...state.chats],
+      };
+    case SUBMIT_COMMENT:
+      return {
+        ...state,
+        chat: {
+          ...state.chat,
+          comments: [action.payload, ...state.chat.comments],
+        },
       };
     default:
       return state;
