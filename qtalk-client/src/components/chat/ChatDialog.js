@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import MyButton from "../utility/MyButton";
+import MyButton from "../../utility/MyButton";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
+import Comments from "./Comments";
 
 // MUI
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -19,15 +20,11 @@ import ChatIcon from "@material-ui/icons/Chat";
 
 // Redux
 import { connect } from "react-redux";
-import { getChat } from "../redux/actions/dataActions";
+import { getChat } from "../../redux/actions/dataActions";
 import LikeButton from "./LikeButton";
 
 const styles = (theme) => ({
   ...theme.spread,
-  invisibleSeperator: {
-    border: "none",
-    margin: 4,
-  },
   profileImage: {
     maxWidth: 200,
     height: 200,
@@ -77,6 +74,7 @@ class ChatDialog extends Component {
         commentCount,
         userImage,
         userHandle,
+        comments,
       },
       UI: { loading },
     } = this.props;
@@ -107,6 +105,8 @@ class ChatDialog extends Component {
           </MyButton>
           <span>{commentCount} Comments</span>
         </Grid>
+        <hr className={classes.visibleSeperator} />
+        <Comments comments={comments} />
       </Grid>
     );
 

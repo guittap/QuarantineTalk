@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import MyButton from "../utility/MyButton";
+import MyButton from "../../utility/MyButton";
 
 // MUI
 import withStyles from "@material-ui/core/styles/withStyles";
@@ -13,7 +13,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 // redux
 import { connect } from "react-redux";
-import { postChat, clearErrors } from "../redux/actions/dataActions";
+import { postChat, clearErrors } from "../../redux/actions/dataActions";
 
 // icons
 import AddIcon from "@material-ui/icons/Add";
