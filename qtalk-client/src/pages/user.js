@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 import { getUserData } from "../redux/actions/dataActions";
 import Chat from "../components/chat/Chat";
 import StaticProfile from "../components/profile/StaticProfile";
+import ChatSkeleton from "../utility/ChatSkeleton";
+import ProfileSkeleton from "../utility/ProfileSkeleton";
 
 class user extends Component {
   state = {
@@ -35,7 +37,7 @@ class user extends Component {
     const { chatIdParam } = this.state;
 
     const chatsMarkup = loading ? (
-      <p>Loading data...</p>
+      <ChatSkeleton />
     ) : chats === null ? (
       <p>No screams from this user</p>
     ) : !chatIdParam ? (
@@ -55,7 +57,7 @@ class user extends Component {
         </Grid>
         <Grid item sm={4} xs={12}>
           {this.state.profile === null ? (
-            <p>Loading profile...</p>
+            <ProfileSkeleton />
           ) : (
             <StaticProfile profile={this.state.profile} />
           )}

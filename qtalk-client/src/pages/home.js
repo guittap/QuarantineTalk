@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Chat from "../components/chat/Chat";
 import Profile from "../components/profile/Profile";
+import ChatSkeleton from "../utility/ChatSkeleton";
 
 import { connect } from "react-redux";
 import { getChats } from "../redux/actions/dataActions";
@@ -18,7 +19,7 @@ class home extends Component {
     let recentChatsMarkup = !loading ? (
       chats.map((chat) => <Chat key={chat.chatId} chat={chat} />)
     ) : (
-      <p>Loading...</p>
+      <ChatSkeleton />
     );
     return (
       <Grid container spacing={6}>
