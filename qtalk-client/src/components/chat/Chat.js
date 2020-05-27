@@ -91,7 +91,11 @@ class Chat extends Component {
               <ChatIcon color="primary" />
             </MyButton>
             <span>{commentCount} Comments</span>
-            <ChatDialog chatId={chatId} userHandle={userHandle} />
+            <ChatDialog
+              chatId={chatId}
+              userHandle={userHandle}
+              openDialog={this.props.openDialog}
+            />
           </CardContent>
         </Card>
       </div>
@@ -103,6 +107,7 @@ Chat.propTypes = {
   user: PropTypes.object.isRequired,
   chat: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({

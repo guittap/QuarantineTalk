@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import MyButton from "../../utility/MyButton";
 import PostChat from "../chat/PostChat";
+import Notifications from "./Notifications";
 
 // MUI
 import AppBar from "@material-ui/core/AppBar";
@@ -14,7 +15,6 @@ import { connect } from "react-redux";
 
 //Icons
 import HomeIcon from "@material-ui/icons/Home";
-import Notifications from "@material-ui/icons/Notifications";
 
 class Navbar extends Component {
   render() {

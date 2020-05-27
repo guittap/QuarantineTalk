@@ -10,10 +10,15 @@ import StaticProfile from "../components/profile/StaticProfile";
 class user extends Component {
   state = {
     profile: null,
+    chatIdParam: null,
   };
 
   componentDidMount() {
     const handle = this.props.match.params.handle;
+    const chatId = this.props.match.params.chatId;
+
+    if (chatId) this.setState({ chatIdParam: chatId });
+
     this.props.getUserData(handle);
     axios
       .get(`/user/${handle}`)
@@ -27,13 +32,20 @@ class user extends Component {
 
   render() {
     const { chats, loading } = this.props.data;
+    const { chatIdParam } = this.state;
 
     const chatsMarkup = loading ? (
       <p>Loading data...</p>
     ) : chats === null ? (
       <p>No screams from this user</p>
-    ) : (
+    ) : !chatIdParam ? (
       chats.map((chat) => <Chat key={chat.chatId} chat={chat} />)
+    ) : (
+      chats.map((chat) => {
+        if (chat.chatId !== chatIdParam)
+          return <Chat key={chat.chatId} chat={chat} />;
+        else return <Chat key={chat.chatId} chat={chat} openDialog />;
+      })
     );
 
     return (
