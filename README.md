@@ -21,11 +21,11 @@ A simple twitter clone full stack project using Firebase and Express for the bac
 #### Navigation
 - for non-logged users: "Login", "Home", and "Signup" will simply bring you to those pages
 - for logged users:
-- - "Add Chat will allow the user to make a "chat" with only text input"
-- - "Home" will take user to home screen
-- - "Notifications" will allow the user to view any notifications they received from another user liking or commenting on their post.
-- - - click on notifications button will automatically mark those notifications as read
-- - - clicking on a notification will bring the user to the corresponding chat
+  - "Add Chat will allow the user to make a "chat" with only text input"
+  - "Home" will take user to home screen
+  - "Notifications" will allow the user to view any notifications they received from another user liking or commenting on their post.
+    - click on notifications button will automatically mark those notifications as read
+    - clicking on a notification will bring the user to the corresponding chat
 
 #### Chats
 - the chats will be similar to twitter
